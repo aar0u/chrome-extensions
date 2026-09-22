@@ -33,12 +33,30 @@ for file in $RELEASE_FILES; do
   set -- "$@" "$file"
 done
 
-if command -v 7z >/dev/null 2>&1; then
+if command -v 7z >/dev/null 2>&1 && 7z -version >/dev/null 2>&1; then
   7z a "$OUTPUT_FILE" "$@"
 elif command -v zip >/dev/null 2>&1; then
   zip -qr "$OUTPUT_FILE" "$@"
+elif command -v python3 >/dev/null 2>&1; then
+  python3 -c '
+import sys, os, zipfile
+
+output_file = sys.argv[1]
+items = sys.argv[2:]
+
+with zipfile.ZipFile(output_file, "w", zipfile.ZIP_DEFLATED) as zf:
+    for item in items:
+        if os.path.isdir(item):
+            for root, _, files in os.walk(item):
+                for file in files:
+                    full_path = os.path.join(root, file)
+                    arcname = os.path.relpath(full_path, ".")
+                    zf.write(full_path, arcname)
+        else:
+            zf.write(item, item)
+' "$OUTPUT_FILE" "$@"
 else
-  echo "Error: neither '7z' nor 'zip' command is available in PATH." >&2
+  echo "Error: neither '7z', 'zip', nor 'python3' is available in PATH." >&2
   exit 1
 fi
 

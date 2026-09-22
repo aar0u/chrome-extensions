@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070b14" />
+      <stop offset="45%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.35" />
+      <stop offset="45%" stop-color="#10b981" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#020617" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="emGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="40%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#34d399" />
+    </linearGradient>
+    <linearGradient id="cyGrad" x1="100%" y1="0%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="40%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#000000" flood-opacity="0.85" />
+    </filter>
+  </defs>
+
+  <!-- Base Squircle -->
+  <rect x="28" y="28" width="456" height="456" rx="112" fill="url(#bgGrad)" filter="url(#shadow)" />
+  <rect x="28" y="28" width="456" height="456" rx="112" fill="url(#halo)" />
+  <rect x="31" y="31" width="450" height="450" rx="109" fill="none" stroke="rgba(56, 189, 248, 0.28)" stroke-width="4" />
+
+  <!-- Center Dark Plate -->
+  <circle cx="256" cy="256" r="176" fill="rgba(15, 23, 42, 0.82)" stroke="rgba(255, 255, 255, 0.08)" stroke-width="4" />
+
+  <!-- Precision Technical Dash Orbit -->
+  <circle cx="256" cy="256" r="146" fill="none" stroke="rgba(148, 163, 184, 0.18)" stroke-width="6" stroke-dasharray="14 16" />
+
+  <!-- Upper Duplex Arrow: Outgoing / Transmit (Emerald) -->
+  <g>
+    <path d="M 140 280 C 140 188, 190 178, 305 178" fill="none" stroke="url(#emGrad)" stroke-width="46" stroke-linecap="round" />
+    <polygon points="380,178 296,126 296,230" fill="#34d399" />
+    <circle cx="140" cy="280" r="15" fill="#FFFFFF" />
+  </g>
+
+  <!-- Lower Duplex Arrow: Incoming / Receive (Cyan) -->
+  <g>
+    <path d="M 372 232 C 372 324, 322 334, 207 334" fill="none" stroke="url(#cyGrad)" stroke-width="46" stroke-linecap="round" />
+    <polygon points="132,334 216,282 216,386" fill="#38bdf8" />
+    <circle cx="372" cy="232" r="15" fill="#FFFFFF" />
+  </g>
+</svg>
