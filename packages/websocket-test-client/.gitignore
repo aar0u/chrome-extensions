@@ -1,0 +1,10 @@
+*.crx
+*.zip
+*.pem
+.DS_Store
+*.tmproj
+*~
+/deletefile.list
+/.project
+dist/
+node_modules/
