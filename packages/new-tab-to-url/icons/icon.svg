@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090e1a" />
+      <stop offset="50%" stop-color="#0f2438" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <radialGradient id="cyanGlow" cx="80%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0" />
+    </radialGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#020617" flood-opacity="0.6" />
+    </filter>
+  </defs>
+
+  <!-- Background rounded squircle -->
+  <rect x="26" y="26" width="460" height="460" rx="105" fill="url(#bgGrad)" filter="url(#shadow)" />
+  <rect x="26" y="26" width="460" height="460" rx="105" fill="url(#cyanGlow)" />
+  <!-- Inner border highlight -->
+  <rect x="29" y="29" width="454" height="454" rx="102" fill="none" stroke="rgba(56, 189, 248, 0.28)" stroke-width="6" />
+
+  <!-- Browser Window Element -->
+  <rect x="90" y="140" width="270" height="260" rx="26" fill="rgba(255, 255, 255, 0.08)" stroke="rgba(148, 163, 184, 0.45)" stroke-width="9" />
+  <!-- Header divider -->
+  <line x1="90" y1="192" x2="360" y2="192" stroke="rgba(148, 163, 184, 0.4)" stroke-width="7" />
+  
+  <!-- Window control dots -->
+  <circle cx="114" cy="166" r="7" fill="rgba(148, 163, 184, 0.6)" />
+  <circle cx="136" cy="166" r="7" fill="rgba(148, 163, 184, 0.6)" />
+  <circle cx="158" cy="166" r="7" fill="rgba(148, 163, 184, 0.6)" />
+
+  <!-- Active Tab in header with Cyan highlight -->
+  <rect x="182" y="152" width="108" height="40" rx="9" fill="rgba(6, 182, 212, 0.25)" />
+  <line x1="226" y1="172" x2="246" y2="172" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+  <line x1="236" y1="162" x2="236" y2="182" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+
+  <!-- Address bar placeholder -->
+  <rect x="120" y="217" width="210" height="30" rx="12" fill="rgba(255, 255, 255, 0.1)" />
+  <rect x="135" y="228" width="95" height="8" rx="4" fill="rgba(56, 189, 248, 0.45)" />
+
+  <!-- Floating Jump / Redirect Arrow -->
+  <g filter="url(#shadow)">
+    <!-- Arrow shaft -->
+    <line x1="190" y1="320" x2="375" y2="135" stroke="#FFFFFF" stroke-width="40" stroke-linecap="round" />
+    <line x1="210" y1="300" x2="330" y2="180" stroke="#06b6d4" stroke-width="12" stroke-linecap="round" />
+    <!-- Arrow head wings -->
+    <polyline points="280,135 375,135 375,230" fill="none" stroke="#FFFFFF" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>

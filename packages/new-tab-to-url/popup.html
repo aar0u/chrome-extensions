@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Tab to URL</title>
+  <link rel="stylesheet" href="css/popup.css">
+</head>
+<body>
+  <div class="popup-shell">
+    <header class="popup-header">
+      <div class="brand">
+        <img src="icons/icon48.png" alt="Logo" class="brand-icon" width="22" height="22">
+        <span class="brand-name">New Tab to URL</span>
+      </div>
+      <span class="badge-tag">Redirector</span>
+    </header>
+
+    <main class="popup-body">
+      <div class="field-group">
+        <div class="field-header">
+          <label for="url-input" class="field-label">Target URL</label>
+          <button type="button" id="use-current-btn" class="text-action-btn" title="Fill with current active tab URL">
+            Use Current Tab
+          </button>
+        </div>
+
+        <div class="input-wrapper">
+          <input 
+            type="text" 
+            id="url-input" 
+            placeholder="e.g. https://github.com or file:///..." 
+            spellcheck="false"
+            autocomplete="off"
+          />
+          <span id="type-badge" class="type-badge hidden"></span>
+        </div>
+      </div>
+
+      <div id="status-msg" class="status-msg" role="status" aria-live="polite"></div>
+
+      <div class="actions-row">
+        <button type="button" id="save-btn" class="btn btn-primary">Save Changes</button>
+        <button type="button" id="test-url-btn" class="btn btn-secondary" title="Open this URL in a new tab to test">Test</button>
+        <button type="button" id="reset-btn" class="btn btn-ghost" title="Clear URL and restore setup screen">Reset</button>
+      </div>
+
+      <div class="tip-card">
+        <span class="tip-dot"></span>
+        <span class="tip-text">For local files (<code>file:///</code>), toggle on <em>Allow access to file URLs</em> in extension details.</span>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="js/popup.js"></script>
+</body>
+</html>

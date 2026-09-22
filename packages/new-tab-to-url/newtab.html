@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Tab to URL</title>
+  <link rel="stylesheet" href="css/newtab.css">
+</head>
+<body>
+  <!-- 1. Ultra-fast redirect loading veil -->
+  <div id="loading-state" class="loading-veil">
+    <div class="pulse-line"></div>
+  </div>
+
+  <!-- 2. Interactive setup screen when no target URL is saved -->
+  <div id="setup-screen" class="setup-layout hidden">
+    <div class="setup-container">
+      <header class="setup-header">
+        <div class="brand-badge">
+          <img src="icons/icon48.png" alt="Icon" width="32" height="32" class="brand-img">
+          <span class="tagline">Minimalist URL Forwarder</span>
+        </div>
+        <h1 class="headline">New Tab to URL</h1>
+        <p class="subheadline">Redirect every new tab to your favorite web app, personal dashboard, or local file.</p>
+      </header>
+
+      <section class="config-card">
+        <div class="input-row">
+          <div class="input-field">
+            <span class="prefix-icon">↗</span>
+            <input 
+              type="text" 
+              id="quick-url-input" 
+              placeholder="Paste any URL (e.g. https://linear.app, about:blank, or file:///...)" 
+              spellcheck="false"
+              autocomplete="off"
+            />
+          </div>
+          <button type="button" id="quick-save-btn" class="primary-btn">Save & Launch</button>
+        </div>
+
+        <div id="quick-feedback" class="feedback-banner hidden" role="status"></div>
+
+        <div class="presets-section">
+          <span class="presets-label">Quick Presets:</span>
+          <div class="presets-grid">
+            <button type="button" class="preset-chip" data-url="about:blank">
+              <span class="chip-type">Clean</span>
+              <code>about:blank</code>
+            </button>
+            <button type="button" class="preset-chip" data-url="https://github.com">
+              <span class="chip-type">Dev</span>
+              <code>github.com</code>
+            </button>
+            <button type="button" class="preset-chip" data-url="https://google.com">
+              <span class="chip-type">Search</span>
+              <code>google.com</code>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="guide-grid">
+        <article class="guide-card">
+          <div class="card-icon">📁</div>
+          <div class="card-content">
+            <h3>Using Local Files</h3>
+            <p>You can set any local HTML dashboard (e.g. <code>file:///path/to/dashboard.html</code>) as your new tab page.</p>
+            <div class="callout-step">
+              <span>Requires enabling <strong>"Allow access to file URLs"</strong> in extension settings.</span>
+              <a href="#" id="open-ext-details" class="step-link">Open Extension Settings →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <div class="card-icon">⚡</div>
+          <div class="card-content">
+            <h3>Zero Latency Redirect</h3>
+            <p>Runs natively via browser tab APIs with zero telemetry, zero analytics, and zero background resource usage.</p>
+          </div>
+        </article>
+      </section>
+
+      <footer class="setup-footer">
+        <span>Click the extension icon in your browser toolbar anytime to edit or reset.</span>
+      </footer>
+    </div>
+  </div>
+
+  <script type="module" src="js/newtab.js"></script>
+</body>
+</html>
