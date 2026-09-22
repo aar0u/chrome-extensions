@@ -13,51 +13,56 @@
     var sendButton;
 
     var open = function() {
-        var url = serverUrl.val();
+        var url = serverUrl.value;
         ws = new WebSocket(url);
         ws.onopen = onOpen;
         ws.onclose = onClose;
         ws.onmessage = onMessage;
         ws.onerror = onError;
 
-        connectionStatus.text('OPENING ...');
-        serverUrl.attr('disabled', 'disabled');
-        connectButton.hide();
-        disconnectButton.show();
+        connectionStatus.textContent = 'OPENING ...';
+        serverUrl.disabled = true;
+        connectButton.style.display = 'none';
+        disconnectButton.style.display = 'inline-block';
+        disconnectButton.disabled = true;
     };
 
     var close = function() {
         if (ws) {
             console.log('CLOSING ...');
+            connectionStatus.textContent = 'CLOSING ...';
+            disconnectButton.disabled = true;
             ws.close();
         }
     };
 
     var reset = function() {
         connected = false;
-        connectionStatus.text('CLOSED');
+        connectionStatus.textContent = 'CLOSED';
 
-        serverUrl.removeAttr('disabled');
-        connectButton.show();
-        disconnectButton.hide();
-        sendMessage.attr('disabled', 'disabled');
-        sendButton.attr('disabled', 'disabled');
+        serverUrl.disabled = false;
+        connectButton.style.display = 'inline-block';
+        disconnectButton.style.display = 'none';
+        disconnectButton.disabled = false;
+        sendMessage.disabled = true;
+        sendButton.disabled = true;
     };
 
     var clearLog = function() {
-        $('#messages').html('');
+        document.getElementById('messages').innerHTML = '';
     };
 
     var onOpen = function() {
-        console.log('OPENED: ' + serverUrl.val());
+        console.log('OPENED: ' + serverUrl.value);
         connected = true;
-        connectionStatus.text('OPENED');
-        sendMessage.removeAttr('disabled');
-        sendButton.removeAttr('disabled');
+        connectionStatus.textContent = 'OPENED';
+        disconnectButton.disabled = false;
+        sendMessage.disabled = false;
+        sendButton.disabled = false;
     };
 
     var onClose = function() {
-        console.log('CLOSED: ' + serverUrl.val());
+        console.log('CLOSED: ' + serverUrl.value);
         ws = null;
         reset();
     };
@@ -72,50 +77,60 @@
     };
 
     var addMessage = function(data, type) {
-        var msg = $('<pre>').text(data);
+        var msg = document.createElement('pre');
+        msg.textContent = data;
         if (type === 'SENT') {
-            msg.addClass('sent');
+            msg.classList.add('sent');
         }
-        var messages = $('#messages');
-        messages.append(msg);
+        var messages = document.getElementById('messages');
+        messages.appendChild(msg);
 
-        var msgBox = messages.get(0);
-        while (msgBox.childNodes.length > 1000) {
-            msgBox.removeChild(msgBox.firstChild);
+        while (messages.childNodes.length > 1000) {
+            messages.removeChild(messages.firstChild);
         }
-        msgBox.scrollTop = msgBox.scrollHeight;
+        messages.scrollTop = messages.scrollHeight;
     };
 
     var addToHistoryList = function(item) {
-        var addedLi = $('<li>').attr('id', item.id).append(
-            $('<a>').attr('href', item.url).attr('data-msg', item.msg).attr('title', item.url + '\n\n' + item.msg).attr('class', 'historyUrl').append(item.url)).append(
-            $('<span>').attr('class', 'removeHistory').append("x")).attr('style', 'display: none;').prependTo(historyList);
+        var link = document.createElement('a');
+        link.href = item.url;
+        link.dataset.msg = item.msg;
+        link.title = item.url + '\n\n' + item.msg;
+        link.className = 'historyUrl';
+        link.textContent = item.url;
 
-        addedLi.toggle('slow');
+        var removeSpan = document.createElement('span');
+        removeSpan.className = 'removeHistory';
+        removeSpan.textContent = 'x';
+
+        var li = document.createElement('li');
+        li.id = item.id;
+        li.appendChild(link);
+        li.appendChild(removeSpan);
+
+        historyList.prepend(li);
     };
 
     var loadHistory = function() {
-        historyList = $('#history');
+        historyList = document.getElementById('history');
         historyItems = JSON.parse(localStorage.getItem('history'));
 
         if (!historyItems) {
             historyItems = [];
         }
 
-        $.each(historyItems, function(i, item) {
+        historyItems.forEach(function(item) {
             addToHistoryList(item);
         });
     };
 
     var removeHistory = function(item) {
-        var removeLi = function() {
-            $(this).remove();
-        };
         for (var i = historyItems.length - 1; i >= 0; i--) {
             if (historyItems[i].url === item.url && historyItems[i].msg === item.msg) {
-                var selector = 'li#' + historyItems[i].id;
-                $(selector).toggle('slow', removeLi);
-
+                var li = document.getElementById(historyItems[i].id);
+                if (li) {
+                    li.remove();
+                }
                 historyItems.splice(i, 1);
             }
         }
@@ -132,13 +147,16 @@
     };
 
     var saveHistory = function(msg) {
-        var item = { 'id': guid(), 'url': serverUrl.val(), 'msg': msg };
+        var item = { 'id': guid(), 'url': serverUrl.value, 'msg': msg };
 
         removeHistory(item);
 
         if (historyItems.length >= 20) {
             historyItems.shift();
-            $('#history li:last-child').remove();
+            var last = historyList.querySelector('li:last-child');
+            if (last) {
+                last.remove();
+            }
         }
 
         historyItems.push(item);
@@ -149,77 +167,80 @@
 
     var clearHistory = function() {
         historyItems = [];
-        localStorage.clear();
-        historyList.empty();
+        localStorage.removeItem('history');
+        historyList.innerHTML = '';
     };
 
     WebSocketClient = {
         init: function() {
-            serverUrl = $('#serverUrl');
-            connectionStatus = $('#connectionStatus');
-            sendMessage = $('#sendMessage');
-            historyList = $('#history');
+            serverUrl = document.getElementById('serverUrl');
+            connectionStatus = document.getElementById('connectionStatus');
+            sendMessage = document.getElementById('sendMessage');
+            historyList = document.getElementById('history');
 
-            connectButton = $('#connectButton');
-            disconnectButton = $('#disconnectButton');
-            sendButton = $('#sendButton');
+            connectButton = document.getElementById('connectButton');
+            disconnectButton = document.getElementById('disconnectButton');
+            sendButton = document.getElementById('sendButton');
 
             loadHistory();
 
-            $('#clearHistory').click(function(e) {
+            document.getElementById('clearHistory').addEventListener('click', function(e) {
                 clearHistory();
             });
 
-            connectButton.click(function(e) {
+            connectButton.addEventListener('click', function(e) {
                 close();
                 open();
             });
 
-            disconnectButton.click(function(e) {
+            disconnectButton.addEventListener('click', function(e) {
                 close();
             });
 
-            sendButton.click(function(e) {
-                var msg = $('#sendMessage').val();
+            sendButton.addEventListener('click', function(e) {
+                if (!ws || !connected) {
+                    return;
+                }
+                var msg = sendMessage.value;
                 addMessage(msg, 'SENT');
                 ws.send(msg);
 
                 saveHistory(msg);
             });
 
-            $('#clearMessage').click(function(e) {
+            document.getElementById('clearMessage').addEventListener('click', function(e) {
                 clearLog();
             });
 
-            historyList.delegate('.removeHistory', 'click', function(e) {
-                var link = $(this).parent().find('a');
-                removeHistory({ 'url': link.attr('href'), 'msg': link.attr('data-msg') });
-                localStorage.setItem('history', JSON.stringify(historyItems));
+            historyList.addEventListener('click', function(e) {
+                if (e.target.classList.contains('removeHistory')) {
+                    var link = e.target.parentElement.querySelector('a');
+                    removeHistory({ 'url': link.getAttribute('href'), 'msg': link.dataset.msg });
+                    localStorage.setItem('history', JSON.stringify(historyItems));
+                } else if (e.target.classList.contains('historyUrl')) {
+                    serverUrl.value = e.target.href;
+                    sendMessage.value = e.target.dataset.msg;
+                    e.preventDefault();
+                }
             });
 
-            historyList.delegate('.historyUrl', 'click', function(e) {
-                window.haha1 = this;
-                serverUrl.val(this.href);
-                sendMessage.val(this.dataset.msg);
-                e.preventDefault();
-            });
-
-            serverUrl.keydown(function(e) {
-                if (e.which === 13) {
+            serverUrl.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
                     connectButton.click();
                 }
             });
 
             var isCtrl;
-            sendMessage.keyup(function(e) {
-                if (e.which === 17) {
+            sendMessage.addEventListener('keyup', function(e) {
+                if (e.key === 'Control') {
                     isCtrl = false;
                 }
-            }).keydown(function(e) {
-                if (e.which === 17) {
+            });
+            sendMessage.addEventListener('keydown', function(e) {
+                if (e.key === 'Control') {
                     isCtrl = true;
                 }
-                if (e.which === 13 && isCtrl === true) {
+                if (e.key === 'Enter' && isCtrl === true) {
                     sendButton.click();
                     return false;
                 }
@@ -230,6 +251,6 @@
 
 var WebSocketClient;
 
-$(function() {
+document.addEventListener('DOMContentLoaded', function() {
     WebSocketClient.init();
 });
