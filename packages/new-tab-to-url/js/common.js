@@ -60,6 +60,8 @@ export function normalizeUrl(rawInput) {
     return { isValid: false, url: '', type: 'empty', error: 'Please enter a target URL.' };
   }
 
+  const lower = input.toLowerCase();
+
   // Support clean blank page
   if (lower === 'about:blank') {
     return { isValid: true, url: 'about:blank', type: 'internal', scheme: 'about:' };
